@@ -36,6 +36,7 @@ export const Main = () => {
         >
           <button>My button</button>
         </Popover>
+        <button>Second button</button>
       </div>
 
       <h2>Modal</h2>
@@ -85,7 +86,9 @@ export function Popover({children, render, placement, modal = true}: Props) {
   const {getReferenceProps, getFloatingProps} = useInteractions([
     useClick(context),
     useRole(context),
-    useDismiss(context),
+    useDismiss(context, {
+      outsidePress: modal,
+    }),
   ]);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export function Popover({children, render, placement, modal = true}: Props) {
         cloneElement(children, getReferenceProps({ref: reference}))}
       <FloatingPortal>
         {open && (
-          <FloatingFocusManager context={context} modal={modal}>
+          <FloatingFocusManager context={context} modal={modal} order={['floating']}>
             <div
               {...getFloatingProps({
                 className: 'Popover',
